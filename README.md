@@ -14,4 +14,4 @@ The hygrometer provides precise temperature data. It constantly scans and displa
 
 19.10.2026 - Mockups (v0.1.0-draft) of the whole platform.
 
-23.10.20226 - Add methodological considerations. 
+23.10.2026 - Add methodological considerations. 
