@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Take the Plaza's Temperature · Five months of heat in Murcia, Spain</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 3 4%27%3E%3Crect x=%272%27 y=%270%27 width=%271%27 height=%271%27 fill=%27%23FFC043%27/%3E%3Crect x=%270%27 y=%271%27 width=%271%27 height=%271%27 fill=%27%23FFB135%27/%3E%3Crect x=%271%27 y=%271%27 width=%271%27 height=%271%27 fill=%27%23F3721D%27/%3E%3Crect x=%272%27 y=%271%27 width=%271%27 height=%271%27 fill=%27%23D91A1A%27/%3E%3Crect x=%271%27 y=%272%27 width=%271%27 height=%271%27 fill=%27%23FF9A1F%27/%3E%3Crect x=%271%27 y=%273%27 width=%271%27 height=%271%27 fill=%27%23FFE062%27/%3E%3C/svg%3E">
+<meta name="description" content="Daily heat register at Plaza de Europa, Murcia: four readings a day, in the air and near the ground, May to September 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
+<style>
+/* Spectral (SIL Open Font License), loaded from Google Fonts */
+
+:root{
+  --bg:#FEF8E1;        /* paper */
+  --ink:#372324;       /* primary text */
+  --ink-2:#584141;     /* secondary text */
+  --band:#DAD2B3;      /* tabs, labels */
+  --card:#EDEAC1;      /* day card */
+  --rule:1.5px solid var(--ink);
+  --hair:1px solid var(--ink);
+  --gap:2px;           /* surface gap between heat cells */
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:"Spectral",Georgia,"Times New Roman",serif;font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{margin:0 auto;padding:0 clamp(14px,2vw,40px)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* ---------- Cover (mockup sample 01) ---------- */
+.cover{min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:6vh clamp(14px,4vw,80px)}
+.cover img{display:block;width:min(66vw,1572px);height:auto}
+@media (max-width:700px){.cover img{width:100%}}
+
+/* ---------- Masthead ---------- */
+.masthead{border-bottom:var(--rule)}
+.masthead .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-top:16px;padding-bottom:12px;flex-wrap:wrap}
+.brand{text-decoration:none;display:block}
+.brand h1{margin:0;font-size:28px;font-weight:700;line-height:1.1;letter-spacing:.005em}
+.brand p{margin:2px 0 0;font-style:italic;font-size:23px;color:var(--ink-2)}
+.mainnav{display:flex;gap:28px;align-items:flex-end}
+.mainnav details{position:relative}
+.mainnav summary,.mainnav > a{list-style:none;cursor:pointer;font-size:18px;font-weight:600;padding:2px 0;text-decoration:none;border-bottom:1.5px solid transparent}
+.mainnav summary::-webkit-details-marker{display:none}
+.mainnav summary:hover,.mainnav > a:hover,.mainnav .is-current > summary{border-bottom-color:var(--ink)}
+.mainnav .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:20;min-width:190px;background:var(--bg);border:var(--hair);display:flex;flex-direction:column}
+.mainnav .menu a{padding:5px 12px;text-decoration:none;border-top:var(--hair);white-space:nowrap}
+.mainnav .menu a:first-child{border-top:0}
+.mainnav .menu a:hover,.mainnav .menu a[aria-current="page"]{background:var(--band)}
+
+/* ---------- View chrome ---------- */
+main.wrap{padding-top:26px;padding-bottom:64px}
+.lede{margin:0 0 22px;font-size:17px}
+.view[hidden]{display:none}
+
+.months{display:grid;grid-template-columns:repeat(5,1fr);border:var(--hair);margin:0 0 18px}
+.months button{background:transparent;border:0;border-left:var(--hair);padding:5px 8px;font-size:19px;font-weight:600;cursor:pointer}
+.months button:first-child{border-left:0}
+.months button:hover{background:#F3EBCB}
+.months button[aria-pressed="true"]{background:var(--band)}
+
+.controls{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;margin:0 0 18px}
+.seg{display:inline-flex;border:var(--hair)}
+.seg button{background:transparent;border:0;border-left:var(--hair);padding:3px 12px;font-size:16px;font-weight:600;cursor:pointer}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--band)}
+.ctl-label{font-size:15px;color:var(--ink-2);margin-right:8px}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:15px;cursor:pointer}
+.check input{accent-color:var(--ink);width:16px;height:16px;margin:0}
+
+/* ---------- Heat grids ---------- */
+.grids{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px clamp(16px,2.2vw,44px)}
+.hour h3{margin:0 0 6px;font-size:20px;font-weight:700}
+.hour h3 span{font-weight:400;font-style:italic;font-size:18px;color:var(--ink-2);margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
+.cell{position:relative;aspect-ratio:1/1;border:0;padding:0;margin:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(10px,1.05vw,17px);font-variant-numeric:tabular-nums;line-height:1;transition:filter .12s}
+.cell .v{opacity:0}
+.show-values .cell .v{opacity:1}
+.cell:hover,.cell.is-peer{filter:brightness(1.07)}
+.cell.is-peer{box-shadow:inset 0 0 0 2px var(--bg)}
+.cell.is-hover{box-shadow:inset 0 0 0 2px var(--ink);filter:none}
+.cell.is-selected{box-shadow:inset 0 0 0 3px var(--ink);filter:none}
+.cell:focus-visible{outline:2px solid var(--ink);outline-offset:1px;z-index:2}
+.stats{margin:6px 0 0;font-size:17px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+
+/* ---------- Legend (as in mockup samples 03 / 05) ---------- */
+.legend{margin:46px 0 0}
+.legend .controls{margin:0 0 46px}
+.legend-title{font-size:16px;color:var(--ink-2);margin:0 0 2px}
+.legend-bar{position:relative;padding-top:22px}
+.strip{display:flex;gap:2px;height:clamp(18px,2vw,30px);padding:0 4px}
+.strip span{flex:1}
+.axis{position:relative;height:34px;border-top:1.5px solid var(--ink)}
+.axis span{position:absolute;top:0;transform:translateX(-50%);font-size:clamp(13px,1.1vw,17px);padding-top:13px;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.2}
+.axis span::before{content:"";position:absolute;left:50%;top:0;height:9px;border-left:1.5px solid var(--ink)}
+.marker{position:absolute;top:0;transform:translateX(-50%);font-size:13px;font-weight:600;line-height:1;text-align:center;pointer-events:none;transition:left .12s}
+.marker::after{content:"";display:block;margin:2px auto 0;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--ink)}
+
+/* ---------- Tooltip ---------- */
+.tip{position:fixed;z-index:50;pointer-events:none;background:var(--bg);border:var(--hair);padding:6px 9px 7px;font-size:14px;line-height:1.3;min-width:150px;box-shadow:0 2px 0 rgba(55,35,36,.12)}
+.tip[hidden]{display:none}
+.tip .d{font-weight:600}
+.tip .h{color:var(--ink-2);font-style:italic}
+.tip table{border-collapse:collapse;margin-top:4px;font-variant-numeric:tabular-nums}
+.tip td{padding:1px 0}
+.tip td:first-child{padding-right:6px}
+.tip td:last-child{text-align:right;padding-left:10px}
+.tip .sw{display:inline-block;width:10px;height:10px;border:1px solid var(--ink);vertical-align:-1px}
+.tip tr.active td{font-weight:600}
+
+/* ---------- Day panel (mockup sample 10) ---------- */
+.day{margin:34px 0 0;border-top:var(--rule);padding-top:22px}
+.day-empty{color:var(--ink-2);font-style:italic;margin:0}
+.day-card{background:var(--band);padding:clamp(18px,2vw,40px)}
+.day-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(14px,1.6vw,30px)}
+.day-head h2{margin:0;font-size:clamp(34px,3.5vw,68px);line-height:.95;font-weight:700}
+.day-head .date{margin:2px 0 0;font-size:clamp(24px,2.4vw,46px);line-height:1.05;font-weight:400}
+.day-nav{display:flex;gap:10px}
+.day-nav button{background:var(--bg);border:1.5px solid var(--ink);padding:3px 12px;font-size:16px;cursor:pointer}
+.day-nav button:hover{background:#F3EBCB}
+.day-nav button:disabled{opacity:.35;cursor:default}
+.day-hours{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.45vw,28px)}
+.dh{border:1.5px solid var(--ink);background:var(--bg)}
+.dh .strip2 div{padding:2px clamp(8px,.8vw,16px);font-size:clamp(17px,1.55vw,30px);line-height:1.35;color:var(--ink)}
+.dh .strip2{border-bottom:1.5px solid var(--ink)}
+.dh table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.dh th,.dh td{padding:2px clamp(8px,.8vw,16px);text-align:left;font-weight:400;border-bottom:1.5px solid var(--ink);line-height:1.35}
+.dh thead th{font-size:clamp(22px,1.95vw,38px);font-weight:700}
+.dh tbody th{font-size:clamp(17px,1.55vw,30px)}
+.dh tbody td{width:1%;white-space:nowrap;background:var(--band);border-left:1.5px solid var(--ink);font-size:clamp(15px,1.35vw,26px);padding:2px clamp(6px,.5vw,10px)}
+.dh tfoot td{font-size:clamp(13px,1.05vw,20px);border-bottom:0;padding-top:5px;padding-bottom:5px}
+
+/* ---------- Stub views & footer ---------- */
+.stub{border:var(--hair);padding:28px;max-width:640px}
+.stub h2{margin:0 0 6px;font-size:24px}
+.stub p{margin:0}
+.load-error{border:2px solid #B70101;padding:14px 18px;margin:0 0 20px}
+footer{border-top:var(--rule)}
+footer .wrap{padding-top:10px;padding-bottom:22px;font-size:14px;color:var(--ink-2);display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between}
+footer strong{color:var(--ink);font-weight:600}
+
+/* ---------- Responsive ---------- */
+@media (max-width:700px){
+  .grids{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cell{font-size:clamp(10px,2.4vw,15px)}
+  .day-hours{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .wrap{padding:0 14px}
+  .brand h1{font-size:21px}
+  .mainnav{gap:18px}
+  .months button{font-size:15px;padding:5px 2px}
+  .grids{gap:22px 14px}
+  .cell{font-size:11px}
+  .day-head h2{font-size:30px}
+  .day-head .date{font-size:20px}
+  .axis .minor{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (forced-colors:active){.cell{forced-color-adjust:none}}
+</style>
+</head>
+<body>
+
+<section class="cover" aria-label="Cover">
+  <img src="mockup/front.png" width="1572" height="380"
+       alt="Take the Plaza's Temperature. Five months of heat in Murcia, Spain. With the support of the Ministerio de Ciencia, Innovación y Universidades, co-funded by the European Union, the Agencia Estatal de Investigación, the Materiality of Crisis Ethnography Lab and Talleres MINIMA.">
+</section>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="#explore/graph">
+      <h1>Take the Plaza's Temperature</h1>
+      <p>Five months of heat in Murcia, Spain</p>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <details data-group="explore">
+        <summary>Explore</summary>
+        <div class="menu">
+          <a href="#explore/table" data-route="explore/table">Daily table</a>
+          <a href="#explore/graph" data-route="explore/graph">Calendar heatmap</a>
+        </div>
+      </details>
+      <details data-group="compare">
+        <summary>Compare</summary>
+        <div class="menu">
+          <a href="#compare/landscape" data-route="compare/landscape">Monthly landscape</a>
+          <a href="#compare/days" data-route="compare/days">Day vs day</a>
+        </div>
+      </details>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div id="load-error" class="load-error" hidden></div>
+
+  <!-- ===== Explore › Calendar heatmap ===== -->
+  <section class="view" id="view-graph" aria-labelledby="graph-title">
+    <h2 id="graph-title" class="sr-only">Calendar heatmap</h2>
+    <!-- PROVISIONAL LEDE: replace with the final text for this view -->
+    <p class="lede">The four hours divide the plaza's day into moments of exposure. The 9:00 reading registers the plaza before the sun has worked on it. The 13:00 reading falls in the early afternoon, under direct radiation. The 17:00 reading belongs to the hours of accumulation, when the paving has absorbed a full day of sun. The 21:00 reading registers what the plaza still holds once the light has gone.</p>
+
+    <div class="months" role="group" aria-label="Month" id="months"></div>
+
+    <div class="grids" id="grids"></div>
+
+    <div class="legend">
+      <div class="controls">
+        <div>
+                    <div class="seg" role="group" aria-label="Reading" id="layer">
+            <button type="button" data-layer="ambient" aria-pressed="true">Ambient</button>
+            <button type="button" data-layer="ground" aria-pressed="false">Ground</button>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="show-values"> Show values</label>
+      </div>
+      <p class="legend-title" aria-hidden="true">color-temperature gradient for reference</p>
+      <div class="legend-bar" aria-hidden="true">
+        <div class="marker" id="marker" hidden></div>
+        <div class="strip" id="strip"></div>
+        <div class="axis" id="ticks"></div>
+      </div>
+    </div>
+
+    <section class="day" id="day" aria-live="polite"></section>
+  </section>
+
+  <!-- ===== Views still to build ===== -->
+  <section class="view" id="view-stub" hidden>
+    <div class="stub">
+      <h2 id="stub-title"></h2>
+      <p>This view is in construction. Meanwhile, <a href="#explore/graph">explore the calendar heatmap</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Daily Heat Register, Plaza de Europa, Murcia, 1 May – 30 September 2026.</span>
+    <span><a href="https://github.com/sorregoxyz/plaza-temperature">Data &amp; code</a></span>
+  </div>
+</footer>
+
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script>
+"use strict";
+(() => {
+
+/* ===================== Configuration ===================== */
+const CSV_URL = "data/plaza-temperature.csv";
+
+// Colour–temperature scale from the mockups: one colour per °C, 9–52 °C.
+const T_MIN = 9;
+const PALETTE = [
+  "#FFE566","#FFE062","#FFDC5D","#FFD759","#FFD254","#FFCE50","#FFC94B","#FFC447", // 9–16
+  "#FFC043","#FFBB3E","#FFB63A","#FFB135","#FFAD31","#FFA82C","#FFA328","#FF9F23", // 17–24
+  "#FF9A1F","#FD921F","#FA8A1E","#F8821E","#F67A1E","#F3721D","#F16A1D","#EE621D", // 25–32
+  "#EC5A1D","#EA521C","#E74A1C","#E5421C","#E33A1B","#E0321B","#DE2A1B","#DB221A", // 33–40
+  "#D91A1A","#D61818","#D31515","#D01313","#CD1111","#CA0E0E","#C60C0C","#C30A0A", // 41–48
+  "#C00808","#BD0606","#BA0303","#B70101"                                          // 49–52
+];
+const T_MAX = T_MIN + PALETTE.length - 1;
+
+const HOURS = [
+  { key: "09", label: "9:00",  note: "before the sun" },
+  { key: "13", label: "13:00", note: "direct radiation" },
+  { key: "17", label: "17:00", note: "accumulation" },
+  { key: "21", label: "21:00", note: "after the light" }
+];
+const LAYERS = { ambient: "Ambient", ground: "Ground" };
+const MONTHS = [
+  { m: 5, slug: "may",       name: "May" },
+  { m: 6, slug: "june",      name: "June" },
+  { m: 7, slug: "july",      name: "July" },
+  { m: 8, slug: "august",    name: "August" },
+  { m: 9, slug: "september", name: "September" }
+];
+const WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const WD_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MON_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const COLS = 5; // calendar block: 5 columns, 6 rows, plus a centred tail for 31-day months
+
+/* ===================== Helpers ===================== */
+const $ = (sel, root = document) => root.querySelector(sel);
+const el = (tag, attrs = {}, text) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v;
+    else if (k === "style") Object.assign(n.style, v);
+    else n.setAttribute(k, v);
+  }
+  if (text != null) n.textContent = text;
+  return n;
+};
+const clampT = t => Math.max(T_MIN, Math.min(T_MAX, Math.round(t)));
+const colorFor = t => PALETTE[clampT(t) - T_MIN];
+const pad = n => String(n).padStart(2, "0");
+const fmtDate = d => `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`;
+const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const deg = t => `${t}°C`;
+
+// Text on a heat cell: whichever of ink / paper has more contrast.
+function lum(hex) {
+  const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)
+    .map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+const INK = "#372324", PAPER = "#FEF8E1";
+const textOn = bg => contrast(bg, INK) >= contrast(bg, PAPER) ? INK : PAPER;
+
+/* ===================== Data ===================== */
+function parseCSV(text) {
+  const lines = text.replace(/^﻿/, "").trim().split(/\r?\n/).filter(l => l.trim());
+  const header = lines.shift().split(",").map(s => s.trim());
+  const need = ["id", "date"];
+  HOURS.forEach(h => { need.push(`temp_${h.key}_ambient`, `temp_${h.key}_near_ground`); });
+  const missing = need.filter(c => !header.includes(c));
+  if (missing.length) throw new Error(`Missing column(s): ${missing.join(", ")}`);
+  const idx = Object.fromEntries(header.map((h, i) => [h, i]));
+  const num = v => { const n = parseFloat(String(v).replace(",", ".")); return Number.isFinite(n) ? n : null; };
+
+  return lines.map(line => {
+    const f = line.split(",").map(s => s.trim());
+    const [d, m, y] = f[idx.date].split(/[\/.\-]/).map(Number);
+    const date = new Date(y < 100 ? 2000 + y : y, m - 1, d);
+    const r = { id: f[idx.id], date, iso: isoDate(date), readings: {} };
+    HOURS.forEach(h => {
+      r.readings[h.key] = {
+        ambient: num(f[idx[`temp_${h.key}_ambient`]]),
+        ground:  num(f[idx[`temp_${h.key}_near_ground`]])
+      };
+    });
+    return r;
+  }).sort((a, b) => a.date - b.date);
+}
+
+async function loadData() {
+  if (location.protocol === "file:") {
+    throw new Error("Browsers do not let a page opened from disk read data/plaza-temperature.csv. View it through a local server (run python3 -m http.server in the project folder, then open http://localhost:8000) or on GitHub Pages.");
+  }
+  const res = await fetch(CSV_URL, { cache: "no-cache" });
+  if (!res.ok) throw new Error(`Could not load ${CSV_URL} (HTTP ${res.status}).`);
+  return parseCSV(await res.text());
+}
+
+/* ===================== State & routing ===================== */
+const state = { view: "explore/graph", month: 5, layer: "ambient", showValues: false, selected: null, hover: null };
+let DATA = [], BY_ISO = new Map();
+
+function readHash() {
+  const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  const view = parts.slice(0, 2).join("/") || "explore/graph";
+  state.view = ["explore/graph", "explore/table", "compare/landscape", "compare/days"].includes(view)
+    ? view : "explore/graph";
+  const mo = MONTHS.find(x => x.slug === parts[2]);
+  if (mo) state.month = mo.m;
+}
+function writeHash() {
+  const mo = MONTHS.find(x => x.m === state.month);
+  const h = state.view === "explore/graph" ? `#explore/graph/${mo.slug}` : `#${state.view}`;
+  if (location.hash !== h) history.replaceState(null, "", h);
+}
+
+/* ===================== Rendering: chrome ===================== */
+function renderNav() {
+  document.querySelectorAll(".mainnav [data-route]").forEach(a => {
+    if (a.dataset.route === state.view) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+  document.querySelectorAll(".mainnav details").forEach(d => {
+    d.classList.toggle("is-current", state.view.startsWith(d.dataset.group));
+    d.open = false;
+  });
+}
+
+function renderView() {
+  renderNav();
+  const isGraph = state.view === "explore/graph";
+  $("#view-graph").hidden = !isGraph;
+  $("#view-stub").hidden = isGraph;
+  if (!isGraph) {
+    const titles = { "explore/table": "Daily table", "compare/landscape": "Monthly landscape", "compare/days": "Day vs day" };
+    $("#stub-title").textContent = titles[state.view];
+  } else {
+    renderMonths();
+    renderGrids();
+    renderDay();
+  }
+  writeHash();
+}
+
+function renderMonths() {
+  const box = $("#months");
+  if (!box.childElementCount) {
+    MONTHS.forEach(mo => {
+      const b = el("button", { type: "button", "data-month": mo.m }, mo.name);
+      b.addEventListener("click", () => { state.month = mo.m; renderView(); });
+      box.append(b);
+    });
+  }
+  box.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.month === state.month)));
+  $("#layer").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.layer === state.layer)));
+}
+
+/* ===================== Rendering: heat grids ===================== */
+function monthRows() { return DATA.filter(r => r.date.getMonth() + 1 === state.month); }
+
+// Position of the i-th day (0-based) in a 5-column block; a short last row is centred.
+function cellPos(i, n) {
+  const fullRows = Math.floor(n / COLS), tail = n % COLS;
+  const row = Math.floor(i / COLS);
+  let col = i % COLS;
+  if (row === fullRows && tail) col += Math.floor((COLS - tail) / 2);
+  return { row: row + 1, col: col + 1 };
+}
+
+function renderGrids() {
+  const rows = monthRows();
+  const mo = MONTHS.find(x => x.m === state.month);
+  const box = $("#grids");
+  box.replaceChildren();
+  box.classList.toggle("show-values", state.showValues);
+
+  HOURS.forEach(h => {
+    const fig = el("figure", { class: "hour" });
+    fig.style.margin = "0";
+    const title = el("h3", { id: `h-${h.key}` }, h.label);
+    title.append(el("span", {}, h.note));
+    fig.append(title);
+
+    const grid = el("div", { class: "grid", role: "group", "aria-label": `${mo.name} 2026, ${h.label}, ${LAYERS[state.layer].toLowerCase()} readings. Use arrow keys to move between days.` });
+    const vals = [];
+    rows.forEach((r, i) => {
+      const v = r.readings[h.key][state.layer];
+      const other = r.readings[h.key][state.layer === "ambient" ? "ground" : "ambient"];
+      const { row, col } = cellPos(i, rows.length);
+      const bg = v == null ? "transparent" : colorFor(v);
+      const b = el("button", {
+        type: "button", class: "cell", tabindex: "-1",
+        "data-iso": r.iso, "data-hour": h.key, "data-row": row, "data-col": col,
+        "aria-label": `${WEEKDAYS[r.date.getDay()]} ${r.date.getDate()} ${mo.name}, ${h.label}: ${state.layer} ${v ?? "no reading"} °C, ${state.layer === "ambient" ? "ground" : "ambient"} ${other ?? "no reading"} °C`
+      });
+      b.style.gridRow = row; b.style.gridColumn = col;
+      b.style.background = bg;
+      b.style.color = v == null ? INK : textOn(bg);
+      if (v == null) b.style.outline = "1px dashed " + INK;
+      b.append(el("span", { class: "v", "aria-hidden": "true" }, v == null ? "–" : `${v}°`));
+      if (state.selected === r.iso) { b.classList.add("is-selected"); b.setAttribute("aria-pressed", "true"); }
+      else b.setAttribute("aria-pressed", "false");
+      grid.append(b);
+      if (v != null) vals.push(v);
+    });
+    // roving tabindex: one tab stop per grid
+    const start = grid.querySelector(".is-selected") || grid.firstElementChild;
+    if (start) start.tabIndex = 0;
+    fig.append(grid);
+
+    if (vals.length) {
+      const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+      fig.append(el("p", { class: "stats" }, `Mean ${mean.toFixed(1)}°  ·  range ${Math.min(...vals)}–${Math.max(...vals)}°`));
+    }
+    box.append(fig);
+  });
+}
+
+function renderLegend() {
+  const strip = $("#strip"), ticks = $("#ticks");
+  PALETTE.forEach(c => { const s = el("span"); s.style.background = c; strip.append(s); });
+  for (let t = 10; t <= 50; t += 5) {
+    const s = el("span", { class: t % 10 ? "minor" : "" }, `${t}°C`);
+    s.style.left = posFor(t);
+    ticks.append(s);
+  }
+}
+// centre of the square for temperature t; the strip is inset 4px on each side of the axis line
+const posFor = t => `calc(4px + (100% - 8px) * ${(clampT(t) - T_MIN + 0.5) / PALETTE.length})`;
+
+/* ===================== Hover, tooltip, keyboard ===================== */
+const tip = $("#tip"), marker = $("#marker");
+
+function showTip(cell, clientX, clientY) {
+  const r = BY_ISO.get(cell.dataset.iso), hk = cell.dataset.hour;
+  const h = HOURS.find(x => x.key === hk), rd = r.readings[hk];
+  tip.replaceChildren();
+  tip.append(el("div", { class: "d" }, `${WD_SHORT[r.date.getDay()]} ${r.date.getDate()} ${MON_SHORT[r.date.getMonth()]}`));
+  tip.append(el("div", { class: "h" }, h.label));
+  const tb = el("table");
+  ["ambient", "ground"].forEach(k => {
+    const tr = el("tr", { class: k === state.layer ? "active" : "" });
+    const td0 = el("td"); const sw = el("span", { class: "sw" }); sw.style.background = rd[k] == null ? "transparent" : colorFor(rd[k]); td0.append(sw);
+    tr.append(td0, el("td", {}, LAYERS[k]), el("td", {}, rd[k] == null ? "no reading" : deg(rd[k])));
+    tb.append(tr);
+  });
+  tip.append(tb);
+  if (rd.ambient != null && rd.ground != null) {
+    const d = rd.ground - rd.ambient;
+    tip.append(el("div", { class: "h" }, d === 0 ? "Ground equals air" : `Ground ${d > 0 ? "+" : "−"}${Math.abs(d)}° vs air`));
+  }
+  tip.hidden = false;
+
+  // position: near pointer, or beside the cell when focused by keyboard
+  const rect = cell.getBoundingClientRect();
+  const x = clientX ?? rect.right, y = clientY ?? rect.top;
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let left = x + 14, top = y + 14;
+  if (left + tw > innerWidth - 8) left = x - tw - 14;
+  if (top + th > innerHeight - 8) top = y - th - 14;
+  tip.style.left = Math.max(8, left) + "px";
+  tip.style.top = Math.max(8, top) + "px";
+
+  const v = rd[state.layer];
+  if (v != null) { marker.hidden = false; marker.textContent = `${v}°`; marker.style.left = posFor(v); }
+}
+
+function setHover(cell) {
+  const grids = $("#grids");
+  grids.querySelectorAll(".is-hover,.is-peer").forEach(c => c.classList.remove("is-hover", "is-peer"));
+  if (!cell) { tip.hidden = true; marker.hidden = true; return; }
+  cell.classList.add("is-hover");
+  grids.querySelectorAll(`.cell[data-iso="${cell.dataset.iso}"]`).forEach(c => { if (c !== cell) c.classList.add("is-peer"); });
+}
+
+function bindGridEvents() {
+  const grids = $("#grids");
+  grids.addEventListener("pointermove", e => {
+    const cell = e.target.closest(".cell");
+    if (!cell) { setHover(null); return; }
+    setHover(cell); showTip(cell, e.clientX, e.clientY);
+  });
+  grids.addEventListener("pointerleave", () => setHover(null));
+  grids.addEventListener("focusin", e => {
+    const cell = e.target.closest(".cell");
+    if (cell) { setHover(cell); showTip(cell); }
+  });
+  grids.addEventListener("focusout", e => { if (!grids.contains(e.relatedTarget)) setHover(null); });
+  grids.addEventListener("click", e => {
+    const cell = e.target.closest(".cell");
+    if (!cell) return;
+    select(state.selected === cell.dataset.iso ? null : cell.dataset.iso, cell);
+  });
+  grids.addEventListener("keydown", e => {
+    const cell = e.target.closest(".cell");
+    if (!cell) return;
+    const dir = { ArrowRight: [0, 1], ArrowLeft: [0, -1], ArrowDown: [1, 0], ArrowUp: [-1, 0] }[e.key];
+    if (e.key === "Escape") { select(null); return; }
+    if (!dir) return;
+    e.preventDefault();
+    const grid = cell.parentElement, cells = [...grid.children];
+    const r = +cell.dataset.row, c = +cell.dataset.col;
+    let next = null;
+    if (dir[0] === 0) { // horizontal: previous / next day
+      const i = cells.indexOf(cell) + dir[1];
+      next = cells[i] || null;
+    } else { // vertical: same column in the neighbouring row, else the nearest one
+      const rowCells = cells.filter(x => +x.dataset.row === r + dir[0]);
+      next = rowCells.sort((a, b) => Math.abs(+a.dataset.col - c) - Math.abs(+b.dataset.col - c))[0] || null;
+    }
+    if (next) { cell.tabIndex = -1; next.tabIndex = 0; next.focus(); }
+  });
+}
+
+function select(iso, fromCell) {
+  state.selected = iso;
+  const hourKey = fromCell?.dataset.hour;
+  renderGrids();
+  renderDay();
+  if (fromCell) { // keep keyboard focus on the same day and hour after re-render
+    const again = $(`#grids .cell[data-iso="${iso ?? fromCell.dataset.iso}"][data-hour="${hourKey}"]`);
+    if (again) {
+      again.parentElement.querySelectorAll(".cell").forEach(c => c.tabIndex = -1);
+      again.tabIndex = 0;
+      if (document.activeElement === document.body || fromCell.matches(":focus-visible")) again.focus({ preventScroll: true });
+    }
+  }
+}
+
+/* ===================== Day panel ===================== */
+function renderDay() {
+  const box = $("#day");
+  box.replaceChildren();
+  const r = state.selected && BY_ISO.get(state.selected);
+  if (!r) { box.append(el("p", { class: "day-empty" }, "Select a day to see its four readings in the air and near the ground.")); return; }
+
+  const card = el("div", { class: "day-card" });
+  const head = el("div", { class: "day-head" });
+  const t = el("div");
+  t.append(el("h2", {}, WEEKDAYS[r.date.getDay()]), el("p", { class: "date" }, fmtDate(r.date)));
+  const nav = el("div", { class: "day-nav" });
+  const i = DATA.indexOf(r);
+  const prev = el("button", { type: "button" }, "← previous day");
+  const next = el("button", { type: "button" }, "next day →");
+  prev.disabled = i <= 0; next.disabled = i >= DATA.length - 1;
+  prev.addEventListener("click", () => goDay(DATA[i - 1]));
+  next.addEventListener("click", () => goDay(DATA[i + 1]));
+  nav.append(prev, next);
+  head.append(t, nav);
+  card.append(head);
+
+  const hours = el("div", { class: "day-hours" });
+  HOURS.forEach(h => {
+    const rd = r.readings[h.key];
+    const box = el("div", { class: "dh" });
+
+    // colour strips: ambient above, ground below
+    const strips = el("div", { class: "strip2", "aria-hidden": "true" });
+    ["ambient", "ground"].forEach(k => {
+      const d = el("div", {}, k);
+      d.style.background = rd[k] == null ? PAPER : colorFor(rd[k]);
+      strips.append(d);
+    });
+
+    // hour, readings, difference
+    const table = el("table");
+    const thead = el("thead"), hr = el("tr");
+    hr.append(el("th", { colspan: "2", scope: "colgroup" }, h.label));
+    thead.append(hr);
+    const tbody = el("tbody");
+    ["ambient", "ground"].forEach(k => {
+      const tr = el("tr");
+      tr.append(el("th", { scope: "row" }, k), el("td", {}, rd[k] == null ? "–" : deg(rd[k])));
+      tbody.append(tr);
+    });
+    table.append(thead, tbody);
+    if (rd.ambient != null && rd.ground != null) {
+      const d = rd.ground - rd.ambient;
+      const tf = el("tfoot"), fr = el("tr");
+      fr.append(el("td", { colspan: "2" }, d === 0 ? "ground equals air" : `ground ${d > 0 ? "+" : "−"}${Math.abs(d)}° vs air`));
+      tf.append(fr); table.append(tf);
+    }
+    box.append(strips, table);
+    hours.append(box);
+  });
+  card.append(hours);
+  box.append(card);
+}
+
+function goDay(r) {
+  if (!r) return;
+  state.selected = r.iso;
+  if (r.date.getMonth() + 1 !== state.month) { state.month = r.date.getMonth() + 1; renderView(); }
+  else { renderGrids(); renderDay(); }
+}
+
+/* ===================== Init ===================== */
+function bindControls() {
+  $("#layer").addEventListener("click", e => {
+    const b = e.target.closest("button[data-layer]");
+    if (!b) return;
+    state.layer = b.dataset.layer;
+    renderMonths(); renderGrids();
+  });
+  $("#show-values").addEventListener("change", e => { state.showValues = e.target.checked; $("#grids").classList.toggle("show-values", state.showValues); });
+  // close menus on outside click / Escape; one menu open at a time
+  document.addEventListener("click", e => {
+    document.querySelectorAll(".mainnav details[open]").forEach(d => { if (!d.contains(e.target)) d.open = false; });
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".mainnav details[open]").forEach(d => d.open = false); });
+  document.querySelectorAll(".mainnav details").forEach(d => d.addEventListener("toggle", () => {
+    if (d.open) document.querySelectorAll(".mainnav details").forEach(o => { if (o !== d) o.open = false; });
+  }));
+  addEventListener("hashchange", () => { readHash(); renderView(); });
+  addEventListener("scroll", () => { tip.hidden = true; }, { passive: true });
+}
+
+loadData().then(rows => {
+  DATA = rows;
+  BY_ISO = new Map(rows.map(r => [r.iso, r]));
+  readHash();
+  renderLegend();
+  bindControls();
+  bindGridEvents();
+  renderView();
+}).catch(err => {
+  const box = $("#load-error");
+  box.hidden = false;
+  box.textContent = `The temperature data could not be read. ${err.message}`;
+});
+
+})();
+</script>
+</body>
+</html>
