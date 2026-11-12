@@ -1,4 +1,4 @@
-![header](https://sorrego.net/wp-content/uploads/header-heat-readme.png)
+![header](https://raw.githubusercontent.com/sorregoxyz/plaza-temperature/refs/heads/main/support-files/header.png)
 
 # Daily Heat Register, Murcia 2026 
 
