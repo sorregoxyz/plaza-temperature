@@ -17,3 +17,5 @@ The hygrometer provides precise temperature data. It constantly scans and displa
 23.10.2026 - Add methodological considerations. 
 
 11.11.2026 - Start a [Research Wiki Documentation](https://github.com/sorregoxyz/plaza-temperature/wiki) site.
+
+14.11.2026 - [Working protopype](https://sorregoxyz.github.io/plaza-temperature/#explore/graph/may) (beta version). 
